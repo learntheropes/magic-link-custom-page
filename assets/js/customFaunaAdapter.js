@@ -42,7 +42,7 @@ const indexes = {
 };
 
 const format = {
-  /** Takes a plain old JavaScript object and turns it into a Fauna object */
+
   to(object) {
     const newObject = {};
     for (const key in object) {
@@ -55,7 +55,7 @@ const format = {
     }
     return newObject;
   },
-  /** Takes a Fauna object and returns a plain old JavaScript object */
+
   from(object) {
     const newObject = {};
     for (const key in object) {
@@ -70,10 +70,6 @@ const format = {
   },
 };
 
-/**
- * Fauna throws an error when something is not found in the db,
- * `next-auth` expects `null` to be returned
- */
 const query = (f, format) => {
   return async function (expr) {
     try {
