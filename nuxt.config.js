@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   runtimeConfig: {
     nextAuthSecret: process.env.NEXTAUTH_SECRET,
-    faunaSecret: process.env.FAUNA_SECRET,
+    mongodbUri: process.env.MONGODB_URI,
     marangaduUser: process.env.MARANGADU_USER,
     marangaduPassword: process.env.MARANGADU_PASSWORD,
     marangaduHost: process.env.MARANGADU_HOST,

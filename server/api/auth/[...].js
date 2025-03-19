@@ -1,11 +1,11 @@
 import { NuxtAuthHandler } from '#auth';
 import EmailProvider from 'next-auth/providers/email';
-import faunadb from 'faunadb';
-import { customFaunaAdapter } from '~/assets/js/customFaunaAdapter';
+import { MongoClient, ServerApiVersion } from "mongodb";
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
 
 const {
   nextAuthSecret,
-  faunaSecret,
+  mongodbUri,
   marangaduUser,
   marangaduPassword,
   marangaduHost,
@@ -13,12 +13,33 @@ const {
   marangaduFrom,
 } = useRuntimeConfig();
 
-const client = new faunadb.Client({
-  secret: faunaSecret,
-  scheme: 'https',
-  domain: 'db.fauna.com',
-  port: 443,
-});
+const options = {
+  tls: true,
+  maxPoolSize: 5,
+  serverSelectionTimeoutMS: 5000,
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+};
+
+let clientPromise;
+
+console.log('NODE_ENV', process.env.NODE_ENV);
+
+if (process.env.NODE_ENV === "development") {
+  if (!global._mongoClientPromise) {
+    const client = new MongoClient(mongodbUri, options);
+    global._mongoClientPromise = client.connect();
+  }
+  clientPromise = global._mongoClientPromise;
+} else {
+  const client = new MongoClient(mongodbUri, options);
+  clientPromise = client.connect();
+}
+
+console.log('clientPromise', clientPromise);
 
 export default NuxtAuthHandler({
   debug: true,
@@ -44,5 +65,5 @@ export default NuxtAuthHandler({
       maxAge: 60 * 60,
     }),
   ],
-  adapter: customFaunaAdapter(client),
+  adapter: MongoDBAdapter(clientPromise)
 });

@@ -18,7 +18,7 @@ const logOut = async () => {
 
 <template>
   <NuxtLayout>
-    <div><h1>This is the dashboard page, a proteted route</h1></div>
+    <div><h1>This is the dashboard page, a protected route</h1></div>
     <div><button @click="getEmail">Get user</button></div>
     <div><NuxtLink to="/">Go to home</NuxtLink></div>
     <div>{{ email }}</div>
