@@ -16,7 +16,7 @@ const {
 const options = {
   tls: true,
   maxPoolSize: 5,
-  serverSelectionTimeoutMS: 5000,
+  // serverSelectionTimeoutMS: 5000,
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
